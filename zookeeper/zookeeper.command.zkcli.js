@@ -23,9 +23,9 @@ angular.module('ng-terminal-zookeeper.command.implementations', ['ng-terminal-zo
             var querystring = encodeQueryData(data);
             var url = "http://localhost:8080/rest/servers/exhibit?" + querystring;
 
-            console.log(url)
+            // console.log(url)
             session.$http.get(url).success(function (response) {
-                console.log(response);
+                // console.log(response);
                 if (response.success) {
                     outText.push(response.data);
                 } else {
