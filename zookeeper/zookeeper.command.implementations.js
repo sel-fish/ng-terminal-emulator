@@ -1,4 +1,11 @@
-﻿angular.module('ng-terminal-zookeeper.command.implementations', ['ng-terminal-zookeeper.command.tools'])
+﻿function encodeQueryData(data) {
+    let ret = [];
+    for (let d in data)
+        ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    return ret.join('&');
+}
+
+angular.module('ng-terminal-zookeeper.command.implementations', ['ng-terminal-zookeeper.command.tools'])
 
 .config(['commandBrokerProvider', function (commandBrokerProvider) {
 
@@ -6,7 +13,28 @@
         command: 'ls',
         description: ['Show children of a node.', 'Example: ls /'],
         handle: function (session) {
-            session.output.push({ output: true, text: ['Not support yet, coming soon ...'], breakLine: true });
+            // var outText = ['Not support yet, coming soon ...'];
+            var outText = [];
+            var serverId = 2;
+            var cmd = "ls";
+            var parameter = Array.prototype.slice.call(arguments, 1);
+
+            var data = { 'serverId': serverId, 'cmd': cmd, 'parameter':  parameter };
+            var querystring = encodeQueryData(data);
+            var url = "http://localhost:8080/rest/servers/exhibit?" + querystring;
+
+            console.log(url)
+            session.$http.get(url).success(function (response) {
+                console.log(response);
+                if (response.success) {
+                    outText.push(response.data);
+                } else {
+                    outText.push(response.message);
+                }
+                session.output.push({ output: true, text: outText, breakLine: true });
+                session.commands.push({ command: 'change-prompt', prompt: { user: "fenqi" } });
+                session.commands.push({ command: 'change-prompt', prompt: { path: "fake" } });
+            });
         }
     });
 
@@ -88,7 +116,7 @@
     // this must be the last
     var helpCommandHandler = function () {
         var me = {};
-        
+
         me.command = 'help';
         me.description = ['Provides instructions about how to use this terminal'];
         me.handle = function (session, cmd) {

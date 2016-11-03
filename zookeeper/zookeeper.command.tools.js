@@ -112,6 +112,7 @@
                     var stackedParts = selectByRedirectors(fullCommandParts);
 
                     var tempSession = {
+                        $http: session.$http,
                         commands: [],
                         output: []
                     };

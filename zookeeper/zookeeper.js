@@ -29,7 +29,7 @@
 
     return provider();
 })
-.controller('console',['$scope','$ga','commandBroker','$rootScope', function ($scope, $ga, commandBroker, $rootScope) {
+.controller('console',['$scope', '$http', '$ga','commandBroker','$rootScope', function ($scope, $http, $ga, commandBroker, $rootScope) {
 
     $rootScope.theme = 'vintage';
 
@@ -56,6 +56,7 @@
     $scope.session = {
         commands: [],
         output: [],
+        $http: $http,
         $scope:$scope
     };
 
@@ -104,12 +105,8 @@
 
 .config(['terminalConfigurationProvider', function (terminalConfigurationProvider) {
 
-    terminalConfigurationProvider.config('vintage').outputDelay = 1;
+    terminalConfigurationProvider.config('vintage').outputDelay = 0;
     terminalConfigurationProvider.config('vintage').allowTypingWriteDisplaying = false;
     terminalConfigurationProvider.config('vintage').typeSoundUrl ='example/content/type.wav';
     terminalConfigurationProvider.config('vintage').startSoundUrl ='example/content/start.wav';
 }]);
-
-// angular.element(function() {
-//   angular.bootstrap(document.getElementById("ng-terminal-zookeeper"), ['ng-terminal-zookeeper']);
-// });
