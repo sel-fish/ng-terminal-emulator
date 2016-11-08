@@ -275,6 +275,10 @@
             $scope.results.splice(0, $scope.results.length);
             $scope.$$phase || $scope.$apply();
         }
+        
+        $scope.completion = function () {
+            console.log("try to completion...");
+        }
     }])
 
     .directive('terminal', function ($document) {
@@ -305,8 +309,7 @@
 
                         var css = attrs['terminalClass'];
                         if (css) {
-                            terminal.addClass(css);
-                        }
+                            terminal.addClass(css); }
 
                         var config = attrs['terminalConfig'];
                         scope.init(config || 'default');
@@ -347,11 +350,11 @@
                         target.on("keydown", function (e) {
 
                             if (e.keyCode == 9) {
-                                console.log("entry tab");
+                                if (scope.showPrompt || scope.allowTypingWriteDisplaying)
+                                    scope.completion();
                                 e.preventDefault();
                             }
                             else if (e.keyCode == 76 && e.ctrlKey) {
-                                console.log("entry ctrl + l");
                                 if (scope.showPrompt || scope.allowTypingWriteDisplaying)
                                     scope.clear();
                                 e.preventDefault();
@@ -420,7 +423,7 @@
                                 if (scope.outputDelay) {
 
                                     for (var i = newValue.text.length - 1; i >= 0; i--) {
-                                        var line = document.createElement('pre');
+                                        var line = document.createElement('terminal-pre');
                                         line.className = 'terminal-line';
 
                                         var textLine = newValue.text[i];

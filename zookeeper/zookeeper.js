@@ -107,6 +107,6 @@
 
     terminalConfigurationProvider.config('vintage').outputDelay = 0;
     terminalConfigurationProvider.config('vintage').allowTypingWriteDisplaying = false;
-    terminalConfigurationProvider.config('vintage').typeSoundUrl ='example/content/type.wav';
-    terminalConfigurationProvider.config('vintage').startSoundUrl ='example/content/start.wav';
+    terminalConfigurationProvider.config('vintage').typeSoundUrl ='zookeeper/content/type.wav';
+    terminalConfigurationProvider.config('vintage').startSoundUrl ='zookeeper/content/start.wav';
 }]);
